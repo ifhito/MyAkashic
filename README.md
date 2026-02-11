@@ -25,10 +25,30 @@ Quick Captureでメモを集め、外部LLM（ChatGPT/Claude/Geminiなど）で�
 - SUDOモデリング: `docs/knowledge-app-sudo-modeling.md`
 - Supabaseスキーマ: `docs/supabase-schema.sql`
 - Supabaseセットアップ: `docs/supabase-setup.md`
+- Docker開発: `docs/docker-dev.md`
 
 ## セットアップ（Supabase）
 1. `docs/supabase-setup.md` に従ってスキーマを反映
 2. `SUPABASE_URL` / `SUPABASE_ANON_KEY` を取得
+
+## Dockerで起動
+ローカルのNodeは使わず、Docker内のNodeで開発します。
+
+```bash
+docker compose up
+```
+
+停止:
+
+```bash
+docker compose down
+```
+
+依存追加など任意コマンド:
+
+```bash
+docker compose run --rm expo npm install <package>
+```
 
 ## 開発ステータス
 - 設計・仕様確定済み
