@@ -1,0 +1,93 @@
+# generated: 2026-02-11 20:28:37
+# project: MyAkashic
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog -> in-progress: Automatically when first story is created (via create-story)
+#   - in-progress -> done: Manually when all stories reach done status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to in-progress automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is done to incorporate learnings
+# - Dev moves story to review, then runs code-review with fresh context
+
+generated: "2026-02-11 20:28:37"
+project: "MyAkashic"
+project_key: "NOKEY"
+tracking_system: "file-system"
+story_location: "_bmad-output/implementation-artifacts"
+
+development_status:
+  epic-1: in-progress
+  1-1-project-bootstrap-auth-foundation: ready-for-dev
+  1-2-magic-link-sign-in: backlog
+  1-3-session-persistence-sign-out: backlog
+  1-4-user-data-access-control: backlog
+  1-5-structuring-provider-language-settings: backlog
+  epic-1-retrospective: optional
+
+  epic-2: backlog
+  2-1-in-app-quick-capture-start: backlog
+  2-2-capture-save-destination-selection: backlog
+  2-3-mobile-share-sheet-ingest: backlog
+  2-4-desktop-right-click-capture: backlog
+  2-5-comment-cancel-safe-exit: backlog
+  epic-2-retrospective: optional
+
+  epic-3: backlog
+  3-1-thread-create-rename-delete: backlog
+  3-2-append-order-guarantee: backlog
+  3-3-continuous-note-view-edit: backlog
+  3-4-segment-delete-consistency: backlog
+  3-5-edit-time-tag-fine-tuning: backlog
+  3-6-thread-link-management: backlog
+  epic-3-retrospective: optional
+
+  epic-4: backlog
+  4-1-structuring-prompt-generate-copy: backlog
+  4-2-open-external-structuring-provider: backlog
+  4-3-paste-structured-text-parse-fields: backlog
+  4-4-ai-tags-initial-attachment: backlog
+  4-5-review-edit-fallback-title: backlog
+  4-6-lossless-recovery-on-structuring-failure: backlog
+  epic-4-retrospective: optional
+
+  epic-5: backlog
+  5-1-unified-title-body-search: backlog
+  5-2-tag-filter-search: backlog
+  5-3-related-link-navigation: backlog
+  5-4-weekly-review-recent-learning: backlog
+  5-5-weekly-resurface-related-knowledge: backlog
+  epic-5-retrospective: optional
+
+  epic-6: backlog
+  6-1-web-core-flows: backlog
+  6-2-mobile-core-flows: backlog
+  6-3-desktop-core-flows: backlog
+  6-4-desktop-right-click-integration: backlog
+  6-5-responsive-accessibility-compliance: backlog
+  6-6-observability-quality-gates: backlog
+  6-7-ci-cd-contract-testing: backlog
+  epic-6-retrospective: optional

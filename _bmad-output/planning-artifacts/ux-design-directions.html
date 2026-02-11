@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyAkashic UX Design Directions</title>
+  <style>
+    :root {
+      --bg: #f2f5f7;
+      --panel: #ffffff;
+      --ink: #101418;
+      --ink-soft: #475467;
+      --line: #d0d5dd;
+      --accent: #0f766e;
+      --accent-press: #115e59;
+      --focus: #14b8a6;
+      --ok: #0e9f6e;
+      --warn: #b54708;
+      --err: #b42318;
+      --space: 8px;
+      --radius: 16px;
+      --shadow: 0 8px 28px rgba(16, 20, 24, 0.08);
+      --frame-w: 360px;
+      --frame-h: 760px;
+      --ui-scale: 1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans JP", "Inter", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 15% 0%, #e8f6f4 0%, var(--bg) 52%);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(8px);
+      background: rgba(242, 245, 247, 0.88);
+      border-bottom: 1px solid rgba(208, 213, 221, 0.85);
+      padding: 16px 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.3;
+      letter-spacing: 0.01em;
+    }
+
+    .sub {
+      margin-top: 6px;
+      color: var(--ink-soft);
+      font-size: 14px;
+    }
+
+    .toolbar {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chip,
+    .toggle,
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: #fff;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .chip.active,
+    .btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .btn:hover,
+    .chip:hover,
+    .toggle:hover {
+      border-color: var(--focus);
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .legend {
+      margin-bottom: 14px;
+      color: var(--ink-soft);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--focus);
+      box-shadow: 0 12px 30px rgba(16, 20, 24, 0.11);
+    }
+
+    .card[data-favorite="true"] {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 18%, white), var(--shadow);
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .meta h2 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      background: #edf2f7;
+      border: 1px solid var(--line);
+      padding: 4px 8px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .desc {
+      margin: 0 0 10px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      min-height: 36px;
+    }
+
+    .mock {
+      width: min(100%, calc(var(--frame-w) * var(--ui-scale)));
+      margin: 0 auto;
+      height: calc(var(--frame-h) * var(--ui-scale));
+      border-radius: 20px;
+      border: 1px solid #c3cdd5;
+      background: #fff;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 14px 30px rgba(8, 15, 23, 0.16);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: calc(56px * var(--ui-scale));
+      border-bottom: 1px solid #e5e9ef;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 calc(14px * var(--ui-scale));
+      font-size: calc(12px * var(--ui-scale));
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      background: linear-gradient(180deg, #ffffff, #f7fafb);
+    }
+
+    .dotset { display: flex; gap: 6px; }
+    .dot {
+      width: calc(8px * var(--ui-scale));
+      height: calc(8px * var(--ui-scale));
+      border-radius: 999px;
+      background: #bcc7d3;
+    }
+
+    .main { flex: 1; display: grid; }
+
+    .pane {
+      border: 1px solid #e8edf2;
+      border-radius: calc(12px * var(--ui-scale));
+      background: #fff;
+      padding: calc(12px * var(--ui-scale));
+      display: grid;
+      align-content: start;
+      gap: calc(8px * var(--ui-scale));
+    }
+
+    .line {
+      height: calc(10px * var(--ui-scale));
+      border-radius: 999px;
+      background: #e8edf3;
+    }
+
+    .line.w60 { width: 60%; }
+    .line.w75 { width: 75%; }
+    .line.w90 { width: 90%; }
+
+    .pill {
+      border: 1px solid #ccd7e1;
+      background: #f7fafc;
+      border-radius: 999px;
+      padding: calc(5px * var(--ui-scale)) calc(10px * var(--ui-scale));
+      display: inline-flex;
+      align-items: center;
+      font-size: calc(11px * var(--ui-scale));
+      color: #42556a;
+      width: fit-content;
+    }
+
+    .cta {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--accent) 85%, #000);
+      height: calc(40px * var(--ui-scale));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: calc(12px * var(--ui-scale));
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: background 160ms ease;
+    }
+
+    .cta:hover { background: var(--accent-press); }
+
+    .rail {
+      background: #f4f8f9;
+      border-right: 1px solid #e2eaec;
+      padding: calc(10px * var(--ui-scale));
+      display: grid;
+      align-content: start;
+      gap: calc(8px * var(--ui-scale));
+    }
+
+    .nav-item {
+      height: calc(34px * var(--ui-scale));
+      border-radius: calc(10px * var(--ui-scale));
+      background: #e5eef0;
+    }
+
+    .nav-item.active {
+      background: color-mix(in srgb, var(--accent) 18%, #ffffff);
+      border: 1px solid color-mix(in srgb, var(--accent) 55%, #ffffff);
+    }
+
+    .footer {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+
+    /* Direction layouts */
+    .d1 .main { grid-template-rows: 1fr auto; gap: calc(10px * var(--ui-scale)); padding: calc(12px * var(--ui-scale)); }
+
+    .d2 .main { grid-template-columns: calc(68px * var(--ui-scale)) 1fr; }
+    .d2 .content { padding: calc(12px * var(--ui-scale)); display: grid; gap: calc(10px * var(--ui-scale)); }
+
+    .d3 .main { grid-template-columns: 44% 56%; gap: calc(8px * var(--ui-scale)); padding: calc(10px * var(--ui-scale)); }
+
+    .d4 .main { padding: calc(12px * var(--ui-scale)); overflow: auto; gap: calc(10px * var(--ui-scale)); }
+    .d4 .stack { display: grid; gap: calc(10px * var(--ui-scale)); }
+
+    .d5 .main { padding: calc(18px * var(--ui-scale)); place-items: center; }
+    .d5 .focus {
+      width: 100%;
+      max-width: calc(280px * var(--ui-scale));
+      display: grid;
+      gap: calc(10px * var(--ui-scale));
+      align-content: start;
+    }
+
+    .d6 .main { padding: calc(12px * var(--ui-scale)); overflow: auto; }
+    .d6 .timeline { display: grid; gap: calc(12px * var(--ui-scale)); }
+    .d6 .event {
+      display: grid;
+      grid-template-columns: calc(14px * var(--ui-scale)) 1fr;
+      gap: calc(10px * var(--ui-scale));
+      align-items: start;
+    }
+    .d6 .node {
+      width: calc(12px * var(--ui-scale));
+      height: calc(12px * var(--ui-scale));
+      border-radius: 999px;
+      margin-top: calc(4px * var(--ui-scale));
+      background: var(--accent);
+    }
+
+    .d7 .main {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 38% 62%;
+      gap: calc(8px * var(--ui-scale));
+      padding: calc(10px * var(--ui-scale));
+    }
+    .d7 .main .pane:nth-child(1) { grid-column: 1 / 3; }
+
+    .d8 .main {
+      grid-template-rows: auto 1fr auto;
+      gap: calc(10px * var(--ui-scale));
+      padding: calc(12px * var(--ui-scale));
+    }
+
+    body[data-view="mobile"] { --ui-scale: 0.92; }
+    body[data-view="tablet"] { --ui-scale: 1.02; }
+    body[data-view="desktop"] { --ui-scale: 1.1; }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .mock { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body data-view="mobile">
+  <header>
+    <h1>MyAkashic Design Directions</h1>
+    <div class="sub">8 visual directions generated from the current UX foundation (Deep Teal accent, modern typography, airy spacing, one-tap capture).</div>
+    <div class="toolbar">
+      <button class="chip active" data-view-btn="mobile">Mobile</button>
+      <button class="chip" data-view-btn="tablet">Tablet</button>
+      <button class="chip" data-view-btn="desktop">Desktop</button>
+      <button class="btn" id="showFav">Show Favorites Only</button>
+      <button class="btn" id="resetFav">Reset Favorites</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="legend">Evaluation guide: layout intuitiveness, interaction style fit, visual weight, navigation approach, component support for core loop, and emotional alignment (awe / confidence / calm).</p>
+
+    <section class="grid" id="grid">
+      <article class="card" data-id="1" data-favorite="false">
+        <div class="meta"><h2>Direction 1: Capture First Stack</h2><span class="tag">High Clarity</span></div>
+        <p class="desc">Single-column flow. Big capture area, immediate save, next action visible.</p>
+        <div class="mock d1">
+          <div class="topbar"><span>Capture</span><div class="dotset"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="main">
+            <div class="pane"><span class="pill">Thread: DDD Book</span><div class="line w90"></div><div class="line w75"></div><div class="line w60"></div></div>
+            <div class="pane"><div class="cta">Append in 1 Tap</div><div class="line w60"></div></div>
+          </div>
+        </div>
+        <div class="footer"><label><input type="checkbox" class="fav" /> Favorite</label><span>Best for: speed</span></div>
+      </article>
+
+      <article class="card" data-id="2" data-favorite="false">
+        <div class="meta"><h2>Direction 2: Command Rail</h2><span class="tag">Desktop Fit</span></div>
+        <p class="desc">Left rail for quick switching, right pane for thread content and actions.</p>
+        <div class="mock d2">
+          <div class="topbar"><span>Threads</span><div class="dotset"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="main">
+            <aside class="rail"><div class="nav-item active"></div><div class="nav-item"></div><div class="nav-item"></div><div class="nav-item"></div></aside>
+            <div class="content">
+              <div class="pane"><span class="pill">Search in 10s</span><div class="line w90"></div><div class="line w75"></div></div>
+              <div class="pane"><div class="cta">Quick Capture</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><label><input type="checkbox" class="fav" /> Favorite</label><span>Best for: desktop flow</span></div>
+      </article>
+
+      <article class="card" data-id="3" data-favorite="false">
+        <div class="meta"><h2>Direction 3: Split Context</h2><span class="tag">Research Mode</span></div>
+        <p class="desc">Left side list, right side long-form detail for rapid scan + deep read.</p>
+        <div class="mock d3">
+          <div class="topbar"><span>Inbox + Detail</span><div class="dotset"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="main">
+            <div class="pane"><div class="line w90"></div><div class="line w75"></div><div class="line w60"></div><div class="line w90"></div></div>
+            <div class="pane"><span class="pill">Knowledge Thread</span><div class="line w90"></div><div class="line w90"></div><div class="line w75"></div><div class="cta">Append</div></div>
+          </div>
+        </div>
+        <div class="footer"><label><input type="checkbox" class="fav" /> Favorite</label><span>Best for: long text</span></div>
+      </article>
+
+      <article class="card" data-id="4" data-favorite="false">
+        <div class="meta"><h2>Direction 4: Card Stream</h2><span class="tag">Review Rhythm</span></div>
+        <p class="desc">Vertical stream with context cards and one-tap actions per block.</p>
+        <div class="mock d4">
+          <div class="topbar"><span>Weekly Review</span><div class="dotset"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="main">
+            <div class="stack">
+              <div class="pane"><span class="pill">This Week</span><div class="line w90"></div><div class="cta">Open Thread</div></div>
+              <div class="pane"><span class="pill">Resurface</span><div class="line w75"></div><div class="line w60"></div></div>
+              <div class="pane"><span class="pill">Action</span><div class="cta">Capture New Insight</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><label><input type="checkbox" class="fav" /> Favorite</label><span>Best for: routine usage</span></div>
+      </article>
+
+      <article class="card" data-id="5" data-favorite="false">
+        <div class="meta"><h2>Direction 5: Focus Composer</h2><span class="tag">Minimal</span></div>
+        <p class="desc">Almost zero chrome. One central action path for writing and append.</p>
+        <div class="mock d5">
+          <div class="topbar"><span>Compose</span><div class="dotset"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="main">
+            <div class="focus">
+              <span class="pill">Thread Selected</span>
+              <div class="pane"><div class="line w90"></div><div class="line w90"></div><div class="line w75"></div></div>
+              <div class="cta">Save to Thread</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><label><input type="checkbox" class="fav" /> Favorite</label><span>Best for: no distraction</span></div>
+      </article>
+
+      <article class="card" data-id="6" data-favorite="false">
+        <div class="meta"><h2>Direction 6: Timeline Thread</h2><span class="tag">Memory Path</span></div>
+        <p class="desc">Append history is displayed as an explicit timeline for confidence and continuity.</p>
+        <div class="mock d6">
+          <div class="topbar"><span>Thread Timeline</span><div class="dotset"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="main">
+            <div class="timeline">
+              <div class="event"><span class="node"></span><div class="pane"><div class="line w90"></div><div class="line w60"></div></div></div>
+              <div class="event"><span class="node"></span><div class="pane"><div class="line w75"></div><div class="line w90"></div></div></div>
+              <div class="event"><span class="node"></span><div class="pane"><div class="line w90"></div><div class="cta">Append Here</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><label><input type="checkbox" class="fav" /> Favorite</label><span>Best for: trust</span></div>
+      </article>
+
+      <article class="card" data-id="7" data-favorite="false">
+        <div class="meta"><h2>Direction 7: Workbench Grid</h2><span class="tag">Power User</span></div>
+        <p class="desc">Multi-pane dashboard for capture, search, and thread detail on one screen.</p>
+        <div class="mock d7">
+          <div class="topbar"><span>Workbench</span><div class="dotset"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="main">
+            <div class="pane"><span class="pill">Global Search</span><div class="line w90"></div><div class="line w75"></div></div>
+            <div class="pane"><span class="pill">Recent</span><div class="line w90"></div><div class="line w60"></div></div>
+            <div class="pane"><span class="pill">Quick Actions</span><div class="cta">1-Tap Capture</div></div>
+          </div>
+        </div>
+        <div class="footer"><label><input type="checkbox" class="fav" /> Favorite</label><span>Best for: heavy usage</span></div>
+      </article>
+
+      <article class="card" data-id="8" data-favorite="false">
+        <div class="meta"><h2>Direction 8: Retrieval Loop</h2><span class="tag">Outcome First</span></div>
+        <p class="desc">Primary navigation starts from retrieval outcomes, then loops back to capture.</p>
+        <div class="mock d8">
+          <div class="topbar"><span>Find and Use</span><div class="dotset"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="main">
+            <div class="pane"><span class="pill">Search & Reuse</span><div class="line w90"></div><div class="line w75"></div></div>
+            <div class="pane"><div class="line w90"></div><div class="line w90"></div><div class="line w60"></div></div>
+            <div class="cta">Capture Follow-up Insight</div>
+          </div>
+        </div>
+        <div class="footer"><label><input type="checkbox" class="fav" /> Favorite</label><span>Best for: business moments</span></div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const body = document.body;
+    const viewBtns = [...document.querySelectorAll('[data-view-btn]')];
+    const cards = [...document.querySelectorAll('.card')];
+    const showFav = document.getElementById('showFav');
+    const resetFav = document.getElementById('resetFav');
+    const favChecks = [...document.querySelectorAll('.fav')];
+
+    viewBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        viewBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        body.setAttribute('data-view', btn.dataset.viewBtn);
+      });
+    });
+
+    favChecks.forEach((check) => {
+      check.addEventListener('change', (e) => {
+        const card = e.target.closest('.card');
+        card.dataset.favorite = e.target.checked ? 'true' : 'false';
+      });
+    });
+
+    let favOnly = false;
+    showFav.addEventListener('click', () => {
+      favOnly = !favOnly;
+      showFav.classList.toggle('active', favOnly);
+      cards.forEach((card) => {
+        const show = !favOnly || card.dataset.favorite === 'true';
+        card.style.display = show ? '' : 'none';
+      });
+    });
+
+    resetFav.addEventListener('click', () => {
+      favChecks.forEach((c) => {
+        c.checked = false;
+        c.closest('.card').dataset.favorite = 'false';
+        c.closest('.card').style.display = '';
+      });
+      favOnly = false;
+      showFav.classList.remove('active');
+    });
+  </script>
+</body>
+</html>
